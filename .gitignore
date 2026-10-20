@@ -15,7 +15,7 @@ AEC-Challenge/
 *.flac
 *.ogg
 
-# Python cache & virtual environments
+# Python cache, IDE folders & virtual environments
 __pycache__/
 *.py[cod]
 *$py.class
@@ -23,7 +23,11 @@ __pycache__/
 venv/
 env/
 .ipynb_checkpoints/
+.idea/
+.vscode/
+*.npz
 
 # Local Multi-Agent Communication Boards (Excluded from public repo)
 AGENT_COMMUNICATION_LOCAL.md
 CODEX_CONTROLLER_ORDERS.md
+DATASET_INSPECTION_FOR_CODEX.md

@@ -1,0 +1,1 @@
+scenario_id,trial_id,sample_rate,farend_clip,nearend_clip,rir_id,rir_switch_samples,segment_start,segment_end,mic_path,reference_path,target_path,seed

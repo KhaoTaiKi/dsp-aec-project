@@ -1,0 +1,12 @@
+{
+  "scenario_id": "S3",
+  "description": "Time-varying room path represented by declared switches between known impulse responses.",
+  "sample_rate_hz": 16000,
+  "farend_speakers": 1,
+  "nearend_speakers": 1,
+  "rir_mode": "piecewise_fixed",
+  "rir_ids": ["rir_0", "rir_1"],
+  "required_manifest_fields": ["rir_switch_samples"],
+  "metrics": ["erle_db_before_switch", "erle_db_after_switch", "reconvergence_time_ms", "nearend_rmse"],
+  "status": "reserved"
+}

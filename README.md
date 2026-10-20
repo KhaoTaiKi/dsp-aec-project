@@ -9,19 +9,26 @@
 
 ```text
 FinalProject/
+├── configs/
+│   └── scenarios/              # ไฟล์ตั้งค่าการทดลองแต่ละสถานการณ์ (S1, S2, S3)
+├── manifests/                  # ตารางดัชนีไฟล์เสียง, Room Impulse Response (RIR), และการทดลอง
 ├── src/                        # โมดูลโค้ดหลักของโปรเจกต์
-│   ├── lms.py                  # อัลกอริทึม Standard LMS Adaptive Filter & Preprocessing/Alignment
-│   ├── nlms.py                 # อัลกอริทึม Normalized LMS (NLMS) & Comparative DSP Methods
-│   ├── metrics.py              # การคำนวณตัวชี้วัด ERLE (dB), SNR, PESQ, STOI
-│   └── baseline_webrtc.py      # การรันเทียบกับ Baseline มาตรฐานอุตสาหกรรม (WebRTC AEC)
+│   ├── lms.py                  # อัลกอริทึม Standard LMS Adaptive Filter & Room Simulator
+│   ├── nlms.py                 # อัลกอริทึม Normalized LMS (NLMS)
+│   ├── metrics.py              # การคำนวณตัวชี้วัด ERLE (dB) และ RMSE
+│   ├── baseline_webrtc.py      # โมดูลสำรองสำหรับเทียบ Baseline ในเฟสถัดไป
+│   └── run_s1_experiment.py    # สคริปต์หลักสำหรับรัน Phase 0 Gate และการทดลอง S1 (10 คลิป)
 ├── notebooks/
 │   └── experiment.ipynb        # สมุดทดลองเปรียบเทียบผลลัพธ์ (What-If & Case-by-Case Study)
 ├── results/
-│   └── figures/                # กราฟ Waveform, Cross-Correlation Lag, Learning Curve, STFT Spectrogram
-├── data/                       # [GIT-IGNORED] โฟลเดอร์เก็บไฟล์เสียง Dataset (ห้ามอัปโหลดขึ้น GitHub!)
+│   ├── s1_one_speaker_static/  # ตาราง CSV/JSON และกราฟผลลัพธ์ของการทดลอง S1
+│   ├── s2_two_speakers_static/ # โฟลเดอร์สำรองสำหรับการทดลอง S2 (Near-End + Far-End)
+│   └── s3_moving_path/         # โฟลเดอร์สำรองสำหรับการทดลอง S3 (Time-Varying Room Path)
+├── data/                       # [GIT-IGNORED] โฟลเดอร์เก็บไฟล์เสียงทั้งหมด (ห้ามอัปโหลดขึ้น GitHub!)
 ├── .gitignore                  # กฎป้องกันการอัปโหลดไฟล์ Dataset (.wav, .mp3, .m4a, data/)
+├── SCENARIO_LAYOUT.md          # ข้อกำหนดโครงสร้างการทดลอง S1, S2, S3
 ├── README_AEC_Project_DataFlow.md  # เอกสารสถาปัตยกรรม Data Flow ภาพรวมและรายส่วนงาน
-└── README.md                   # คู่มือการตั้งค่าและดาวน์โหลด Dataset ฉบับนี้
+└── README.md                   # คู่มือการตั้งค่าและรันการทดลองฉบับนี้
 ```
 
 ---

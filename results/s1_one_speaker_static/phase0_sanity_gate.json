@@ -1,0 +1,20 @@
+{
+  "gate": "CDX-01B_Phase0_Synthetic_Known_Room",
+  "sample_rate_hz": 16000,
+  "duration_sec": 6.0,
+  "num_taps": 128,
+  "non_zero_rir_taps": 125,
+  "measured_input_power_px": 0.034189,
+  "max_instantaneous_window_energy": 6.1756,
+  "lms_stationary_bound_mu_max": 0.2285,
+  "lms_instantaneous_burst_bound_mu_max": 0.1619,
+  "lms_mu_used": 0.02,
+  "nlms_mu_used": 0.5,
+  "lms_full_erle_db": 22.07,
+  "lms_steady_state_erle_db": 32.03,
+  "nlms_full_erle_db": 32.64,
+  "nlms_steady_state_erle_db": 42.89,
+  "lms_weight_rmse_vs_true_rir": 0.027167,
+  "nlms_weight_rmse_vs_true_rir": 0.023945,
+  "gate_passed": true
+}
