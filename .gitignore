@@ -27,7 +27,9 @@ env/
 .vscode/
 *.npz
 
-# Local Multi-Agent Communication Boards (Excluded from public repo)
+# Local Multi-Agent Communication Boards & Local Test Sandbox (Excluded from public repo)
 AGENT_COMMUNICATION_LOCAL.md
 CODEX_CONTROLLER_ORDERS.md
 DATASET_INSPECTION_FOR_CODEX.md
+test/
+backups/
