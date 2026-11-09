@@ -238,8 +238,8 @@ cells.append(nbf.v4.new_markdown_cell("""---
    - ลบสเปกตรัมใน Time-Frequency พอลดเสียงสะท้อนได้ แต่เกิด **Musical Noise (เสียงจ๊อกๆ ใต้น้ำแหลมๆ)**
 """))
 
-cells.append(nbf.v4.new_code_cell("""# เตรียมสัญญาณทดสอบ (3 วินาที)
-N_test = min(len(raw_sig), int(fs_sig * 3.0))
+cells.append(nbf.v4.new_code_cell("""# เตรียมสัญญาณทดสอบเต็มความยาวคลิป (8 วินาที / 128,000 จุด)
+N_test = len(raw_sig)
 ref_test = raw_sig[:N_test]
 mic_test = echo_sig[:N_test]
 t_sec = np.arange(N_test) / fs_sig
@@ -530,7 +530,7 @@ def run_interactive_audio_benchmark(
     clip_idx2: int = 1,
     reverb: str = "medium",
     lag_ms: float = 10.0,
-    duration_sec: float = 3.5
+    duration_sec: float = 8.0
 ):
     print(\"=\" * 80)
     print(f\"🎯 ตัวอย่างที่ {example_num}: {title}\")
@@ -670,7 +670,7 @@ cells.append(nbf.v4.new_code_cell("""res1 = run_interactive_audio_benchmark(
     clip_idx1=0,
     reverb="medium",
     lag_ms=10.0,
-    duration_sec=3.5
+    duration_sec=8.0
 )
 benchmark_results_all.append(res1)
 """))
@@ -687,7 +687,7 @@ cells.append(nbf.v4.new_code_cell("""res2 = run_interactive_audio_benchmark(
     clip_idx1=1,
     reverb="high",
     lag_ms=15.0,
-    duration_sec=3.5
+    duration_sec=8.0
 )
 benchmark_results_all.append(res2)
 """))
@@ -706,7 +706,7 @@ cells.append(nbf.v4.new_code_cell("""res3 = run_interactive_audio_benchmark(
     clip_idx2=1,
     reverb="medium",
     lag_ms=12.0,
-    duration_sec=3.5
+    duration_sec=8.0
 )
 benchmark_results_all.append(res3)
 """))
@@ -724,7 +724,7 @@ cells.append(nbf.v4.new_code_cell("""res4 = run_interactive_audio_benchmark(
     clip_idx2=3,
     reverb="high",
     lag_ms=16.0,
-    duration_sec=3.5
+    duration_sec=8.0
 )
 benchmark_results_all.append(res4)
 """))
@@ -742,7 +742,7 @@ cells.append(nbf.v4.new_code_cell("""res5 = run_interactive_audio_benchmark(
     clip_idx1=0,
     reverb="medium",
     lag_ms=10.0,
-    duration_sec=3.5
+    duration_sec=8.0
 )
 benchmark_results_all.append(res5)
 """))
@@ -759,7 +759,7 @@ cells.append(nbf.v4.new_code_cell("""res6 = run_interactive_audio_benchmark(
     clip_idx1=1,
     reverb="high",
     lag_ms=14.0,
-    duration_sec=3.5
+    duration_sec=8.0
 )
 benchmark_results_all.append(res6)
 """))
