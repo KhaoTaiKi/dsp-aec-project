@@ -30,6 +30,9 @@ from src.common.dsp_utils import (
     correlation_offset,
     shift_signal,
     iir_filter,
+    time_axis,
+    generate_sine,
+    spectrum,
 )
 
 # 3. นำเข้าฟังก์ชันจำลองห้องสะท้อนเสียงและเตรียมเสียง (จาก src.simulation.room_simulator)
@@ -67,6 +70,8 @@ __all__ = [
     "calculate_rmse",
     "load_wav_mono",
     "align_signal_lengths",
+    "time_axis",
+    "generate_sine",
+    "spectrum",
 ]
 
-print("🚀 [setup_dsp] โหลดและเชื่อมต่อฟังก์ชัน DSP ทั้งหมดสำเร็จ พร้อมลุย!")

@@ -238,3 +238,45 @@ def resample_ratio(
     x_new = signal.resample_poly(x, up, down)
     t_new = np.arange(len(x_new)) / fs_new
     return x_new, t_new
+
+
+def time_axis(fs: int, duration: float) -> np.ndarray:
+    """สร้างแกนเวลา (Time Vector) ตั้งแต่ 0 ถึง duration วินาที"""
+    T = 1.0 / fs
+    return np.arange(0, duration, T)
+
+
+def generate_sine(f: float, t: np.ndarray, A: float = 1.0, p: float = 0.0) -> np.ndarray:
+    """สร้างสัญญาณ Sine Wave: y = A * sin(2*pi*f*t + p)"""
+    return A * np.sin(2.0 * np.pi * f * t + p)
+
+
+def spectrum(x: np.ndarray, fs: float = 16000, NFFT: int = -1) -> Tuple[np.ndarray, np.ndarray]:
+    """
+    คำนวณสเปกตรัมขนาด (Magnitude Spectrum) แบบ Single-Sided FFT
+    
+    Parameters
+    ----------
+    x : np.ndarray
+        สัญญาณอินพุต 1D
+    fs : float
+        Sampling Rate (Hz), ค่าเริ่มต้น 16000 Hz
+    NFFT : int
+        จำนวนจุด FFT (-1 หมายถึงใช้เท่ากับ len(x))
+        
+    Returns
+    -------
+    freq : np.ndarray
+        แกนความถี่ (0 ถึง fs/2 Hz)
+    mag : np.ndarray
+        ขนาดสเปกตรัม (Magnitude)
+    """
+    if NFFT == -1:
+        NFFT = len(x)
+    X = np.fft.fft(x, NFFT)
+    N = len(X)
+    X_half = X[:N // 2]
+    mag = np.abs(X_half) * 2.0 / N
+    freq = np.arange(len(mag)) * fs / N
+    return freq, mag
+
