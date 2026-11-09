@@ -1,19 +1,10 @@
 # =============================================================================
-# DSP Final Project — Dataset & Media Ignore Rules
-# ห้าม push ชุดข้อมูลเสียง (Microsoft AEC Challenge) ขึ้น GitHub เด็ดขาด!
+# DSP Final Project — Ignore Rules
 # =============================================================================
 
-# Dataset directories
-data/
+# Large external raw datasets (Excluded from git)
 datasets/
 AEC-Challenge/
-
-# Audio & media files
-*.wav
-*.mp3
-*.m4a
-*.flac
-*.ogg
 
 # Python cache, IDE folders & virtual environments
 __pycache__/
@@ -27,9 +18,10 @@ env/
 .vscode/
 *.npz
 
-# Local Multi-Agent Communication Boards & Local Test Sandbox (Excluded from public repo)
+# Local Multi-Agent Communication Boards & Scratch Archive (Excluded)
 AGENT_COMMUNICATION_LOCAL.md
 CODEX_CONTROLLER_ORDERS.md
 DATASET_INSPECTION_FOR_CODEX.md
 test/
 backups/
+scratch/

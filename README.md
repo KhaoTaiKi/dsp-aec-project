@@ -1,18 +1,31 @@
 # Acoustic Echo Cancellation & Noise Analysis (DSP Final Project)
 
-โปรเจกต์ไฟนอลวิชา **Digital Signal Processing (DSP)**  
-เรื่อง **การวิเคราะห์และเปรียบเทียบการตัดเสียงสะท้อนในห้องด้วยตัวกรองปรับตัวได้เชิงทดลอง (LMS vs NLMS)**
+โปรเจกต์ไฟนอลวิชา **517354 Digital Signal Processing (DSP)**  
+เรื่อง **การวิเคราะห์และเปรียบเทียบการตัดเสียงสะท้อนในห้องด้วยตัวกรองปรับตัวได้เชิงทดลอง (LMS vs NLMS with Delay Compensation)**  
+ภาควิชาคอมพิวเตอร์ คณะวิทยาศาสตร์ มหาวิทยาลัยศิลปากร
+
+---
+
+## ⚡ ทางลัดเอกสารและผลการทดลอง (Quick Navigation)
+
+| รายการ | รูปแบบไฟล์ | คำอธิบาย |
+| :--- | :--- | :--- |
+| 📄 **เล่มรายงานฉบับสมบูรณ์** | [PDF](docs/report/DSP_FINAL_PROJECT_REPORT.pdf) \| [HTML](docs/report/DSP_FINAL_PROJECT_REPORT.html) \| [MD](docs/report/DSP_FINAL_PROJECT_REPORT.md) | รายงานฉบับเต็ม 13 หัวข้อ อ้างอิงทฤษฎี สมการคณิตศาสตร์ และกราฟผลลัพธ์ |
+| 🎙️ **สไลด์นำเสนอ 15 สไลด์** | [PDF](docs/presentation/DSP_FINAL_PROJECT_PRESENTATION.pdf) \| [HTML](docs/presentation/DSP_FINAL_PROJECT_PRESENTATION.html) \| [MD](docs/presentation/DSP_FINAL_PROJECT_PRESENTATION_SLIDES.md) | สไลด์ 16:9 ออกแบบกระชับตามเวลาพูด 12 นาที + ตอบคำถาม 5 นาที |
+| 🧭 **สรุปตอบคำถามนำเสนอ** | [Markdown](docs/presentation/PRESENTATION_NOTES.md) | โพยเจาะลึกคำถามทางเทคนิค (DAF, Spectral Leakage, Savitzky-Golay) |
+| 📓 **Main Experiment Notebook** | [main.ipynb](notebooks/main.ipynb) | โน้ตบุ๊กหลักสำหรับรันการทดลองจริง มีตัวเล่นเสียงฟัง Clean vs Echo |
+| 📓 **Step-by-Step Learning Guide** | [step_by_step_dsp_guide.ipynb](notebooks/step_by_step_dsp_guide.ipynb) | คู่มือการทดลองทีละสเต็ป 6 ขั้นตอน รันผ่าน 100% พร้อมคำอธิบายภาษาไทย |
 
 ---
 
 ## 1. สถานการณ์การทดลองทั้ง 3 กรณี (Experimental Scenarios)
 
 1. **S1 (`s1_one_person`) — คนพูด 1 คน ในห้องและตำแหน่งคงที่ (Static Room, One Speaker)**:
-   - มีเฉพาะเสียงพูดต้นทางจากลำโพง (Far-End) สะท้อนผ่านผลตอบสนองของห้องคงที่ (`fixed_room`) เข้าสู่ไมโครโฟน โดยไม่มีคนพูดแทรกหน้าไมค์ เป้าหมายคือตัดเสียงสะท้อนออกจนสัญญาณคงเหลือเข้าใกล้ความเงียบ
-2. **S2 (`s2_two_people_static`) — คนพูด 2 คน ในห้องและตำแหน่งคงที่ (Static Room, Two Speakers)**:
+   - มีเฉพาะเสียงพูดต้นทางจากลำโพง (Far-End) สะท้อนผ่านผลตอบสนองของห้องคงที่ (`fixed_room`) เข้าสู่ไมโครโฟน โดยไม่มีคนพูดแทรกหน้าไมค์ เป้าหมายคือตัดเสียงสะท้อนออกจนสัญญาณคงเหลือเข้าใกล้ความเงียบ (NLMS ทำได้สูงถึง **69.32 dB ERLE**)
+2. **S2 (`s2_two_people_static`) — คนพูด 2 คน ในห้องและตำแหน่งคงที่ (Static Room, Two Speakers - Double-talk)**:
    - มีทั้งเสียงสะท้อนจากลำโพง (Far-End) และเสียงคนพูดฝั่งใกล้หน้าไมโครโฟน (Near-End) ในห้องที่มีการสะท้อนคงที่ (`fixed_room`) เป้าหมายคือตัดเสียงสะท้อนจากลำโพงออกโดยไม่ทำลายเสียงคนพูดฝั่งใกล้
 3. **S3 (`s3_moving_position`) — มีการขยับเปลี่ยนตำแหน่ง (Moving Position / Time-Varying Room Path)**:
-   - จำลองการขยับตำแหน่งของผู้พูดหรือไมโครโฟน โดยการสลับผลตอบสนองของห้อง (`moving_room`) ตามช่วงเวลาที่กำหนด เพื่อทดสอบความสามารถในการปรับตัวตามการเปลี่ยนแปลงของตัวกรอง (Tracking & Convergence)
+   - จำลองการขยับตำแหน่งของผู้พูดหรือไมโครโฟน โดยการสลับผลตอบสนองของห้อง (`moving_room`) ตามช่วงเวลาที่กำหนด เพื่อทดสอบความสามารถในการปรับตัวตามการเปลี่ยนแปลงของตัวกรอง (Tracking & Re-convergence)
 
 ---
 
@@ -20,50 +33,51 @@
 
 ```text
 FinalProject/
-├── data/                                   # [GIT-IGNORED] โฟลเดอร์เก็บข้อมูลเสียงและห้องจำลองในเครื่อง (ห้ามเอาขึ้น GitHub)
-│   ├── source_clips/                       # เก็บไฟล์เสียงพูดสะอาดต้นฉบับ (Original Clean Voice Clips)
-│   │   ├── s1_one_person/                  # คลิปเสียงต้นทางสำหรับกรณี S1 (คนพูด 1 คน ห้องนิ่ง)
-│   │   ├── s2_two_people/                  # คลิปเสียงต้นทางสำหรับกรณี S2 (คนพูด 2 คน ห้องนิ่ง)
-│   │   └── s3_moving/                      # คลิปเสียงต้นทางสำหรับกรณี S3 (มีการขยับเปลี่ยนตำแหน่ง)
-│   ├── room_impulse_responses/             # เก็บข้อมูลผลตอบสนองอิมพัลส์ของห้อง (Room Impulse Responses: RIR)
-│   │   ├── fixed_room/                     # RIR ของห้องคงที่ สำหรับใช้ในกรณี S1 และ S2
-│   │   └── moving_room/                    # RIR ของแต่ละตำแหน่งที่เปลี่ยนไปตามเวลา สำหรับใช้ในกรณี S3
-│   └── simulated/                          # เก็บสัญญาณไมโครโฟนจำลองและสัญญาณเอาต์พุตที่สร้างจากการทดลอง
-│       ├── s1_one_person/                  # สัญญาณจำลองของการทดลอง S1
-│       ├── s2_two_people_static/           # สัญญาณจำลองของการทดลอง S2
-│       └── s3_moving_position/             # สัญญาณจำลองของการทดลอง S3
+├── docs/                                   # รวมเอกสารรายงาน สไลด์นำเสนอ และโพยติวทั้งหมด
+│   ├── report/                             # เล่มรายงานโครงงานฉบับสมบูรณ์ (PDF, HTML, MD)
+│   │   ├── DSP_FINAL_PROJECT_REPORT.pdf
+│   │   ├── DSP_FINAL_PROJECT_REPORT.html
+│   │   └── DSP_FINAL_PROJECT_REPORT.md
+│   ├── presentation/                       # สไลด์นำเสนอและโน้ตเตรียมพรีเซนต์
+│   │   ├── DSP_FINAL_PROJECT_PRESENTATION.pdf
+│   │   ├── DSP_FINAL_PROJECT_PRESENTATION.html
+│   │   ├── DSP_FINAL_PROJECT_PRESENTATION_SLIDES.md
+│   │   ├── PRESENTATION_NOTES.md
+│   │   └── assets/                         # ภาพกราฟความละเอียดสูง fig1-fig7 และพรีวิวสไลด์
+│   └── archive/                            # เอกสารระดมความคิดตอนเริ่มต้นโครงงาน
+│       └── DSP_Final_Project_20_Ideas.md
 │
-├── configs/                                # เก็บไฟล์ตั้งค่าพารามิเตอร์ของการทดลองแต่ละกรณี (ไม่มีไฟล์เสียง)
-│   ├── s1_one_person/                      # การตั้งค่าของการทดลอง S1
-│   ├── s2_two_people_static/               # การตั้งค่าของการทดลอง S2
-│   └── s3_moving_position/                 # การตั้งค่าของการทดลอง S3
+├── notebooks/                              # สมุดทดลอง Jupyter Notebooks
+│   ├── main.ipynb                          # โน้ตบุ๊กหลักสำหรับรันการทดลองจริงและฟังเสียง
+│   ├── step_by_step_dsp_guide.ipynb        # โน้ตบุ๊กคู่มือทำความเข้าใจ 6 ขั้นตอนตามลำดับตรรกะ
+│   └── project_guide.ipynb                 # สมุดแนะนำโครงสร้างโปรเจกต์
 │
-├── manifests/                              # เก็บตารางดัชนีรายชื่อคลิปเสียง ค่าห้องจำลอง และรายละเอียดการทดลอง
-│   ├── s1_manifest/                        # ตารางดัชนีของการทดลอง S1
-│   ├── s2_manifest/                        # ตารางดัชนีของการทดลอง S2
-│   └── s3_manifest/                        # ตารางดัชนีของการทดลอง S3
+├── scripts/                                # สคริปต์อัตโนมัติสำหรับคอมไพล์เอกสารและสร้างกราฟ
+│   ├── generate_all_plots.py               # สร้างภาพกราฟความละเอียดสูง fig1 ถึง fig7
+│   ├── build_report_pdf.py                 # คอมไพล์เล่มรายงานฉบับสมบูรณ์เป็น HTML และ PDF
+│   ├── build_presentation_pdf.py           # คอมไพล์สไลด์นำเสนอ 16:9 เป็น HTML และ PDF
+│   └── build_step_by_step_notebook.py      # สร้างและรัน notebook step_by_step_dsp_guide.ipynb
 │
-├── results/                                # เก็บตารางสรุปตัวเลขผลลัพธ์และรูปกราฟทั้งหมด
-│   ├── s1_one_person/                      # ตารางและกราฟผลลัพธ์ของกรณี S1
-│   ├── s2_two_people_static/               # ตารางและกราฟผลลัพธ์ของกรณี S2
-│   └── s3_moving_position/                 # ตารางและกราฟผลลัพธ์ของกรณี S3
-│
-├── src/                                    # โค้ดหลักของโปรเจกต์ แบ่งตามหน้าที่รับผิดชอบ (ใช้ร่วมกันทั้ง S1, S2, S3)
-│   ├── io/                                 # โหลดไฟล์เสียง บันทึกไฟล์เสียง และจัดการค่า Sample Rate
-│   ├── simulation/                         # จัดการ Room Impulse Response และสร้างสัญญาณไมโครโฟนจำลอง
+├── src/                                    # ซอร์สโค้ด DSP ทั้งหมด (Pure NumPy & Clean Architecture)
+│   ├── io/                                 # โหลดไฟล์เสียง บันทึกไฟล์เสียง และจัดการ Sample Rate
+│   ├── simulation/                         # จัดการ RIR และจำลองสัญญาณเสียงสะท้อนในห้อง
 │   ├── adaptive_filters/                   # อัลกอริทึมตัวกรองปรับตัวได้ LMS และ NLMS
-│   ├── metrics/                            # คำนวณตัวชี้วัดประสิทธิภาพ (เช่น ERLE, RMSE) และการประเมินผลแต่ละกรณี
-│   ├── visualization/                      # สร้างกราฟคลื่นเสียง (Waveform), Spectrogram, และกราฟสรุปผล
-│   ├── pipelines/                          # จุดสั่งรันการทดลองแยกตามสถานการณ์ (ส่วนเดียวใน src/ ที่แยกตาม S1/S2/S3)
-│   │   ├── s1_one_person/                  # ไปป์ไลน์สั่งรันการทดลอง S1
-│   │   ├── s2_two_people_static/           # ไปป์ไลน์สั่งรันการทดลอง S2
-│   │   └── s3_moving_position/             # ไปป์ไลน์สั่งรันการทดลอง S3
-│   └── common/                             # ฟังก์ชันตรวจสอบความถูกต้อง พาธไฟล์ และค่าคงที่ที่ใช้ร่วมกันทั้งโปรเจกต์
+│   ├── metrics/                            # คำนวณตัวชี้วัด ERLE, RMSE, และ SNR
+│   ├── visualization/                      # วาดกราฟ Waveform, Spectrogram, และกราฟสรุป
+│   ├── pipelines/                          # ไปป์ไลน์สั่งรันการทดลอง (S1, S2, S3)
+│   └── common/                             # ฟังก์ชันตรวจสอบความถูกต้อง ค่าคงที่กลาง
 │
-├── notebooks/                              # สมุดทดลองสำหรับรันและวิเคราะห์ผลทีละขั้นตอน
-│   └── main.ipynb                          # โน้ตบุ๊กหลักสำหรับรันการทดลองทั้งหมดและพล็อตกราฟแสดงผล
-├── .gitignore                              # กฎบล็อกไฟล์เสียงและโฟลเดอร์ data/ ไม่ให้ถูกอัปโหลดขึ้น GitHub
-└── README.md                               # เอกสารอธิบายโครงสร้างโปรเจกต์ฉบับนี้
+├── results/                                # โฟลเดอร์เก็บกราฟและข้อมูลผลการทดลองแยกตามสถานการณ์
+│   ├── s1_one_person/                      # ผลลัพธ์และรูปกราฟกรณี S1 (fig4_s1_erle.png)
+│   ├── s2_two_people_static/               # ผลลัพธ์และรูปกราฟกรณี S2 (fig5_s2_doubletalk.png)
+│   └── s3_moving_position/                 # ผลลัพธ์และรูปกราฟกรณี S3 (fig6_s3_moving.png)
+│
+├── configs/                                # การตั้งค่าพารามิเตอร์ของการทดลองแต่ละสถานการณ์
+├── manifests/                              # ตารางดัชนีรายชื่อคลิปเสียงและห้องจำลอง
+├── data/                                   # [GIT-IGNORED] โฟลเดอร์ข้อมูลเสียงในเครื่อง (ห้ามขึ้น Git)
+├── start-jupyter.cmd                       # คำสั่งเปิด Jupyter Lab/Notebook สำหรับ Windows
+├── .gitignore                              # กฎบล็อกไฟล์เสียง โฟลเดอร์ data/ และ scratch/
+└── README.md                               # เอกสารแนะนำโปรเจกต์ฉบับนี้
 ```
 
 ---
@@ -84,8 +98,25 @@ FinalProject/
 
 ---
 
-## 4. ข้อควรระวังสำคัญเรื่อง GitHub
+## 4. คำสั่งสำหรับคอมไพล์เอกสารใหม่ (Build Automation)
 
-> [!CAUTION]
-> **ห้าม Commit หรือ Push ไฟล์เสียง (`*.wav`, `*.mp3`, `*.m4a`) และโฟลเดอร์ `data/` ขึ้นบน GitHub เด็ดขาด**  
-> ไฟล์ `.gitignore` ได้ตั้งค่าบล็อกโฟลเดอร์ `data/` และไฟล์เสียงทั้งหมดไว้แล้ว เพื่อให้บน GitHub เก็บเฉพาะโครงสร้างโปรเจกต์ โค้ด การตั้งค่า ตารางดัชนี และผลลัพธ์เท่านั้น
+หากมีการแก้ไขเนื้อหาใน Markdown หรือต้องการเจนกราฟใหม่ สามารถรันผ่าน Command Line:
+
+```bash
+# 1. รันเจนภาพกราฟประกอบทั้งหมด (fig1 - fig7)
+python scripts/generate_all_plots.py
+
+# 2. คอมไพล์เล่มรายงานฉบับสมบูรณ์เป็น PDF & HTML
+python scripts/build_report_pdf.py
+
+# 3. คอมไพล์สไลด์นำเสนอเป็น PDF & HTML
+python scripts/build_presentation_pdf.py
+```
+
+---
+
+## 5. ข้อควรระวังสำคัญเรื่อง GitHub
+
+> [!NOTE]
+> **ข้อมูลสำหรับการทดลอง (Curated Benchmark Clips):**  
+> ชุดข้อมูลเสียงที่จำเป็นในการรันการทดลองทั้งหมด (~2.5 MB) ได้รับการจัดเตรียมไว้ในโฟลเดอร์ `data/` เรียบร้อยแล้ว เพื่อให้เพื่อนร่วมทีมหรือผู้ตรวจสามารถ clone โครงงานและรันการทดลองซ้ำได้ทันที (ส่วนชุดข้อมูลดิบภายนอกขนาดใหญ่ เช่น Microsoft AEC Challenge ฉบับเต็มหลายกิกะไบต์ จะถูกบล็อกใน `.gitignore`)
